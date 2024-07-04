@@ -2,6 +2,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import WordPullUp from "../ui/word-pull-up";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 interface PriceCardProps {
   title: string;
@@ -12,9 +16,27 @@ interface PriceCardProps {
     name: string;
   }[];
   delay: number;
+  paymentLink: string | undefined;
 }
 
-const PriceCard = ({ title, desc, price, features, delay }: PriceCardProps) => {
+const PriceCard = ({
+  title,
+  desc,
+  price,
+  features,
+  delay,
+  paymentLink,
+}: PriceCardProps) => {
+  const router = useRouter();
+  const { user } = useKindeBrowserClient();
+  const handlePaymentRoute = () => {
+    if (!user) return toast.error("Please login to your acccount first");
+    paymentLink
+      ? router.push(paymentLink + `?prefilled_email=${user.email}`)
+      : toast.error("Something went wrong");
+    return;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -39,8 +61,10 @@ const PriceCard = ({ title, desc, price, features, delay }: PriceCardProps) => {
 
           <span className="text-sm font-medium text-gray-700">/month</span>
         </p>
-
-        <button className="group relative inline-flex w-full h-12 mt-5 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-6 font-medium text-text bg-primaryCol transition-all duration-100 [box-shadow:5px_5px_rgb(235_220_255)] active:translate-x-[3px] active:translate-y-[3px] active:[box-shadow:0px_0px_rgb(235_233_252)]">
+        <button
+          onClick={handlePaymentRoute}
+          className="group relative inline-flex w-full h-12 mt-5 items-center justify-center overflow-hidden rounded-md border border-neutral-200 px-6 font-medium text-text bg-primaryCol transition-all duration-100 [box-shadow:5px_5px_rgb(235_220_255)] active:translate-x-[3px] active:translate-y-[3px] active:[box-shadow:0px_0px_rgb(235_233_252)]"
+        >
           Get Started
         </button>
       </div>
@@ -127,6 +151,7 @@ export const Pricing = () => {
           ]}
           desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, omnis!"
           delay={0.3}
+          paymentLink={process.env.NEXT_PUBLIC_STRIPE_STARTER_LINK}
         />
 
         <PriceCard
@@ -142,6 +167,7 @@ export const Pricing = () => {
           ]}
           desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, omnis!"
           delay={0.5}
+          paymentLink={process.env.NEXT_PUBLIC_STRIPE_PRO_LINK}
         />
 
         <PriceCard
@@ -157,6 +183,7 @@ export const Pricing = () => {
           ]}
           desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, omnis!"
           delay={0.7}
+          paymentLink={process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_LINK}
         />
       </div>
     </div>

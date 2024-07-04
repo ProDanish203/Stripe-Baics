@@ -1,10 +1,12 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import SparklesText from "../ui/sparkle-text";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 export const Header = () => {
   const isPremium = false;
-  const isAuthenticated = false;
+  const { isAuthenticated, isLoading } = useKindeBrowserClient();
   return (
     <header className="flex items-center justify-between sm:px-20 py-5 border-b border-neutral-200">
       <div className="">
@@ -29,9 +31,13 @@ export const Header = () => {
         >
           Pricing
         </Link>
-        <button className="text-sm ml-3 group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-6 font-medium text-neutral-600 transition-all duration-100 [box-shadow:5px_5px_rgb(82_82_82)] hover:translate-x-[3px] hover:translate-y-[3px] hover:[box-shadow:0px_0px_rgb(82_82_82)]">
-          {isAuthenticated ? "Logout" : "Login"}
-        </button>
+        {!isLoading && (
+          <Link href={isAuthenticated ? "/api/auth/logout" : "/api/auth/login"}>
+            <button className="text-sm ml-3 group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-6 font-medium text-neutral-600 transition-all duration-100 [box-shadow:5px_5px_rgb(82_82_82)] hover:translate-x-[3px] hover:translate-y-[3px] hover:[box-shadow:0px_0px_rgb(82_82_82)]">
+              {isAuthenticated ? "Logout" : "Login"}
+            </button>
+          </Link>
+        )}
         {isPremium && (
           <Link href="/premium">
             <button className="group relative inline-flex h-11 text-sm items-center justify-center overflow-hidden rounded-md bg-primaryCol text-text px-6 font-medium duration-500 mt-1">

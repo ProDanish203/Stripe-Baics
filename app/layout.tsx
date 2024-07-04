@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
+import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {children}
-        </main>
-        <Footer/>
+        <ReactQueryProvider>
+          <Toaster richColors position="top-right" />
+          <Header />
+          <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {children}
+          </main>
+          <Footer />
+        </ReactQueryProvider>
       </body>
     </html>
   );

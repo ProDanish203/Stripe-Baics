@@ -11,6 +11,7 @@
   "dependencies": {
     "@kinde-oss/kinde-auth-nextjs": "^2.3.3",
     "@prisma/client": "^5.16.1",
+    "@tanstack/react-query": "^5.49.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.2.12",
@@ -19,6 +20,8 @@
     "prisma": "^5.16.1",
     "react": "^18",
     "react-dom": "^18",
+    "sonner": "^1.5.0",
+    "stripe": "^16.1.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
