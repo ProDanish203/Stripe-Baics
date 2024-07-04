@@ -71,12 +71,12 @@ const PriceCard = ({
 
       <div className="p-6 sm:px-8">
         <p className="text-lg font-medium text-gray-900 sm:text-xl">
-          What's included:
+          What&apos;s included:
         </p>
 
         <ul className="mt-2 space-y-2 sm:mt-4">
           {features.map((feature) => (
-            <li className="flex items-center gap-1">
+            <li key={feature.name} className="flex items-center gap-1">
               {feature.included ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
